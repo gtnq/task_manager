@@ -1,0 +1,20 @@
+{
+  "name": "task_manager",
+  "version": "1.0.0",
+  "description": "for fun\r ![image](https://user-images.githubusercontent.com/78008918/226779773-0fb16bcd-7d44-4761-8342-b1907df13948.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gtnq/task_manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gtnq/task_manager/issues"
+  },
+  "homepage": "https://github.com/gtnq/task_manager#readme"
+}
