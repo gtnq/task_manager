@@ -22,36 +22,38 @@ function Body() {
 		[current_task, setCurrentTask] = useState(""),
 		[current_workers, setCurrentWorker] = useState(""),
 		[dueDate, getDueDate] = useState(new Date()),
-		[desiredHour, getDesiredHour] = useState(),
-		[desiredMinues, getDesiredMinues] = useState();
-		//[dueTime, getDueTime] = useState(t);
+		[finish, getFinish] = useState();
 
 	let tasksList = tasks.map((items, ind) => (
-		<div
+		<option
 			id={`tasks_${ind}`}
 			key={`tasks_${ind}`}>
 			{" "}
 			{items}{" "}
-		</div>
+		</option>
 	));
 
 	let workerList = workers.map((items, ind) => (
-		<div
+		<>
+		<input
+			type = 'checkbox'
 			id={`workers_${ind}`}
-			key={`workers_${ind}`}>
-			{" "}
-			{items}{" "}
-		</div>
-	));
+			key={`workers_${ind}`}
+			value = {items}
+			/>{items}<br/>
+			</>
+			));
 	//console.log(dues)
 	let duesList = dues.map((items, ind) => (
-		
-		<div
+		<>
+		<input
+			type = 'checkbox'
 			id={`dues_${ind}`}
-			key={`dues_${ind}`}>
-			{" "}
-			{items.toString()}{" "}
-		</div>
+			key={`dues_${ind}`}
+			onChange={() => getFinish(items.toString())}
+			checked={finish == items.toString()}/>
+			{items.toString()}<br/>
+			</>
 	));
 	//console.log(workers, 'worker')
 
@@ -95,7 +97,10 @@ function Body() {
 				onClick={() => addTasks([current_task, ...tasks])}>
 				Save
 			</button>
-			<div id="tasks">{tasksList}</div>
+			<br/>
+			<select id="tasks" multiple>{tasksList}</select>
+
+
 			<h2> workers </h2>
 			<input
 				type="textarea"
@@ -107,9 +112,11 @@ function Body() {
 				onClick={() => addingworker()}>
 				Save
 			</button>
-			<div id="workers">{workerList}</div>
-			<h2> dues </h2>
+			<div id="workers" multiple>{workerList}</div>
 			
+
+
+			<h2> dues </h2>
 			<Calendar
 				onChange={getDueDate}
 				value={dueDate}
