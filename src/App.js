@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import TimePicker from "react-time-picker";
 
+
 function Tasks() {
 	return;
 }
@@ -21,7 +22,9 @@ function Body() {
 		[current_task, setCurrentTask] = useState(""),
 		[current_workers, setCurrentWorker] = useState(""),
 		[dueDate, getDueDate] = useState(new Date()),
-		[dueTime, getDueTime] = useState("10:00");
+		[desiredHour, getDesiredHour] = useState(),
+		[desiredMinues, getDesiredMinues] = useState();
+		//[dueTime, getDueTime] = useState(t);
 
 	let tasksList = tasks.map((items, ind) => (
 		<div
@@ -40,12 +43,14 @@ function Body() {
 			{items}{" "}
 		</div>
 	));
-	let DuesList = dues.map((items, ind) => (
+	//console.log(dues)
+	let duesList = dues.map((items, ind) => (
+		
 		<div
 			id={`dues_${ind}`}
 			key={`dues_${ind}`}>
 			{" "}
-			{items}{" "}
+			{items.toString()}{" "}
 		</div>
 	));
 	//console.log(workers, 'worker')
@@ -59,9 +64,23 @@ function Body() {
 			}
 		}
 	};
-	console.log(dueDate, "duedate");
-	console.log(dueTime, "duetime");
-	console.log(dues, 'dues');
+	//console.log(dueDate, "duedate");
+	//console.log(dueTime, "duetime");
+	//console.log(dues, "dues");
+	let updateHour = (e) => {
+		let dateitem = dueDate
+		dateitem.setHours(e.target.value)
+		console.log(dateitem)
+		getDueDate(new Date(dateitem))
+
+	}
+	let updateMinutes = (e) => {
+		let dateitem = dueDate
+		console.log(dueDate)
+		dateitem.setMinutes(e.target.value)
+		console.log(dateitem)
+		getDueDate(new Date(dateitem))
+	}
 
 	return (
 		<>
@@ -77,7 +96,6 @@ function Body() {
 				Save
 			</button>
 			<div id="tasks">{tasksList}</div>
-
 			<h2> workers </h2>
 			<input
 				type="textarea"
@@ -90,29 +108,45 @@ function Body() {
 				Save
 			</button>
 			<div id="workers">{workerList}</div>
-
-			{/*
 			<h2> dues </h2>
-			<input type="textarea" id = 'dues_input'></input>
-            <button id = 'save_tasks'>Save</button>
 			
-            */}
 			<Calendar
 				onChange={getDueDate}
 				value={dueDate}
 			/>
-			<TimePicker
-				onChange={getDueTime}
-				value={dueTime}
+			<input
+				aria-label="Hour"
+				data-input="true"
+				inputMode="numeric"
+				max="23"
+				min="0"
+				name="hour"
+				placeholder="--"
+				type="number"
+				value= {dueDate.getHours()}
+				onChange = {(evt)=> updateHour(evt)}
 			/>
+			{/* from https://projects.wojtekmaj.pl/react-time-picker/ */}
+			<input
+				data-input="true"
+				inputMode="numeric"
+				max="59"
+				min="0"
+				name="second"
+				placeholder="--"
+				type="number"
+				value= {dueDate.getMinutes()}
+				onChange = {(evt)=> updateMinutes(evt)}
+			/>
+			
 			<button
 				id="save_due"
 				onClick={() =>
-					addDues([...dues, { date: dueDate, time: dueTime }])
+					addDues([...dues, dueDate])
 				}>
 				Save
 			</button>
-			<div id="dues">{}</div>
+			<div id="dues">{duesList}</div>
 		</>
 	);
 }
