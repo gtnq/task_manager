@@ -22,24 +22,28 @@ function Body() {
         [current_workers, setCurrentWorker] = useState(''),
         [dueDate, getDueDate] = useState(new Date()),
         [dueTime, getDueTime] = useState('10:00');
-
+    
 	let tasksList = tasks.map((items, ind) => (
 		<div id={`tasks_${ind}`}> {items} </div>
 	));
-	let workerList = workers.map((items, ind) => (
-		<div id={`worker_${ind}`}> {items} </div>
-	));
+
+	//let workerList = workers.map((items, ind) => (
+		//<div id={`worker_${ind}`}> {items} </div>
+	//));
 	let duesList = dues.map((items, ind) => (
 		<div id={`dues_${ind}`}> {items} </div>
 	));
+    console.log(workers, 'worker')
 
-    let addingworker = (names) => {
-        let arr = names.split(',')
+    let addingworker = () => {
+        console.log(workers)
+        let arr = current_workers.split(',')
         for (let i = 0; i < arr.length; i++) {
             if (!workers.includes(arr[i])) {
                 addWorker(arr[i], ...workers)
             }
         }
+        
 
     }
 
@@ -66,11 +70,11 @@ function Body() {
 				placeholder="comma after each worker please"
 				onChange={(evt) => setCurrentWorker(evt.target.value)}></input>
 			<button
-				id="save_tasks"
-				onClick={() => addingworker(current_workers)}>
+				id="save_worker"
+				onClick={() => addTasks([current_workers, ...workers])}>
 				Save
 			</button>
-			<div id="workers">{workerList}</div>
+			<div id="workers">{/*workerList*/}</div>
 
 
 
