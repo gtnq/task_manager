@@ -15,17 +15,17 @@ function Dues() {
 }
 
 function Body() {
-	const [tasks, addTasks] = useState([]),
+	const [tasks, addTasks] = useState(['q']),
 		[selectTask, getSelectTask] = useState(),
 		[current_task, setCurrentTask] = useState(""),
 		//
 		//
-		[workers, addWorker] = useState([]),
+		[workers, addWorker] = useState(['w']),
 		[current_workers, setCurrentWorker] = useState(""),
 		[selected_workers, setSelectWorker] = useState([]),
 		//
 		//
-		[dues, addDues] = useState([]),
+		[dues, addDues] = useState([new Date()]),
 		[finish, getFinish] = useState(),
 		[dueDate, getDueDate] = useState(new Date()),
 		//
@@ -33,50 +33,59 @@ function Body() {
 		[assignTask, setAssignTask] = useState(),
 		[assignedTasks, setAssignedTask] = useState([]);
 
-	const assignTasks = () => {
-		let assignment = {
-			task: selectTask,
-			worker: selected_workers,
-			due: finish,
-		};
+	const assigningTasks = () => {
+		if (finish && selected_workers && selectTask) {
+			let assignment = {
+				task: selectTask,
+				worker: selected_workers,
+				due: finish
+			};
 
-		setAssignTask(assignment);
-		setAssignedTask(assignTask, ...assignedTasks);
-		console.log(assignment, 'assignment')
-		console.log(assignTask, 'assignTask')
-		console.log(assignedTasks, 'assignedTasks')
+			setAssignTask(assignment);
+			setAssignedTask([assignTask, ...assignedTasks]);
+			console.log(assignment, "assignment");
+			console.log(assignTask, "assignTask");
+			console.log(assignedTasks, "assignedTasks");
 
+			//
+			let before_tasks = tasks,
+				before_workers = workers,
+				before_dues = dues;
 
-		//
-		let before_tasks = tasks,
-			before_workers = workers,
-			before_dues = dues;
+			//
+			let before_tasks_loc = before_tasks.indexOf(selectTask),
+				before_workers_loc = before_workers.indexOf(selected_workers),
+				before_dues_loc = before_dues.indexOf(finish);
 
-		//
-		let before_tasks_loc = before_tasks.indexOf(selectTask),
-			before_workers_loc = before_workers.indexOf(selected_workers),
-			before_dues_loc = before_dues.indexOf(finish);
+			//
+			before_tasks.splice(before_tasks_loc, 1);
+			before_workers.splice(before_workers_loc, 1);
+			before_dues.splice(before_dues_loc, 1);
 
-		//
-		before_tasks.splice(before_tasks_loc, 1);
-		before_workers.splice(before_workers_loc, 1);
-		before_dues.splice(before_dues_loc, 1);
-
-		//
-		addTasks(before_tasks)
-		addWorker(before_workers)
-		addDues(before_dues)
+			//
+			addTasks(before_tasks);
+			addWorker(before_workers);
+			addDues(before_dues);
+		} else {
+			alert('please select something PLEASE')
+		}
 	};
-
-	const displayAssignment = assignedTasks.map((item,ind) => {
+	/*s
+	const displayAssignment = assignedTasks.map((item, ind) => {
 		<>
 			<input
 				type="checkbox"
 				id={`assignment_${ind}`}
 				key={`assignment_${ind}`}
-			/>Task:{item.task}, Worker(s):{item.worker.map((name)=> {<span>{name},</span>})} Due Date and Time: {item.dues} <hr />
-		</>
-	})
+			/>
+			Task:{item.task}, Worker(s):
+			{item.worker.map((name) => {
+				<span>{name},</span>;
+			})}{" "}
+			Due Date and Time: {item.dues} <hr />
+		</>;
+	});
+	*/
 
 	let tasksList = tasks.map((items, ind) => (
 		<>
@@ -181,7 +190,7 @@ function Body() {
 
 	return (
 		<>
-			<button onclick={() => assignTasks()}>Save Selected</button>
+			<button onClick={() => assigningTasks()}>Save Selected</button>
 			<h2>tasks</h2>
 			<input
 				type="textarea"
@@ -255,7 +264,7 @@ function Body() {
 			<div id="dues">{duesList}</div>
 			<hr />
 			<h3 id="assigned">assigned_tasks</h3>
-			<div id="list_assigned">{displayAssignment}</div>
+			<div id="list_assigned">{}</div>
 		</>
 	);
 }
