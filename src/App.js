@@ -1,31 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import TimePicker from "react-time-picker";
 
-function Tasks() {
-	return;
-}
-
-function Workers() {
-	return;
-}
-
-function Dues() {
-	return;
-}
-const Assignment = function(t, w, d) {
-	this.task = t
-	this.workers = w
-	this.due = d
-}
+const Assignment = function (t, w, d) {
+	this.task = t;
+	this.workers = w;
+	this.due = d;
+};
 
 function Body() {
-	const [tasks, addTasks] = useState(['q']),
+	const [tasks, addTasks] = useState(["q"]),
 		[selectTask, getSelectTask] = useState(),
 		[current_task, setCurrentTask] = useState(""),
 		//
 		//
-		[workers, addWorker] = useState(['w']),
+		[workers, addWorker] = useState(["w"]),
 		[current_workers, setCurrentWorker] = useState(""),
 		[selected_workers, setSelectWorker] = useState([]),
 		//
@@ -40,11 +28,13 @@ function Body() {
 
 	const assigningTasks = () => {
 		if (finish && selected_workers.length && selectTask) {
-			let t = selectTask, w = selected_workers, d = finish
+			let t = selectTask,
+				w = selected_workers,
+				d = finish;
 			const assignment = {
 				task: t,
 				worker: w,
-				due: d
+				due: d,
 			};
 			console.log(assignment, "assignment");
 
@@ -73,7 +63,7 @@ function Body() {
 			addWorker(before_workers);
 			addDues(before_dues);
 		} else {
-			alert('please select something PLEASE')
+			alert("please select something PLEASE");
 		}
 	};
 	/*s
