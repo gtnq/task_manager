@@ -287,7 +287,7 @@ function Load(props) {
 export default function Home(props) {
 	const [admin, setAdmin] = useState(true),
 		[log, setLog] = useState(false);
-	console.log(props.return)
+	//console.log(props.return)
 	return (
 		<>
             {log && <App return = {true} />}

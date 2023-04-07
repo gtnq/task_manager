@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Home from "./admin";
-import { Worker } from "./worker";
+import  Worker  from "./worker";
 //import readFile from "fs"
 
 let page = "text";
@@ -36,7 +36,7 @@ function auth(user, pw, setAdmin, setWorker, setLog) {
 				break;
 			}
 		}
-		if (i > workers.length) {
+		if (workers.length > i) {
 			console.log("worker check");
 			console.log(
 				workers[i].username === user,
@@ -112,7 +112,7 @@ export default function App(props) {
 					log={setLog}
 				/>
 			)}
-			<div>{ad && <Home admin={setAdmin} log = {setLog} />}</div>
+			<div>{ad && <Home />}</div>
 			<div>{worker && <Worker />}</div>
 		</>
 	);
