@@ -1,3 +1,12 @@
 login => admin => create/remove/assign tasks 
                 => add allowed login for user/new admin
     => worker => track/mark complete task
+Use server=> login page (authentication) (maybe special grand login for create/delete admin login
+          => admin=> write tasks => assign worker
+                  => Delete tasks
+                  => modify authentication info for user
+          => user => view the tasks => mark complete for tasks.
+ 
+
+
+
