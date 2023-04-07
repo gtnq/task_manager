@@ -1,9 +1,11 @@
 {
-	"admin": [{
-        "firstName": "tony",
-        "lastName": "yu",
-        "password":12314
-    }],
+	"admin": [
+		{
+			"firstName": "tony",
+			"lastName": "yu",
+			"password": 12314
+		}
+	],
 	"worker": [],
 	"tasks": []
 }
