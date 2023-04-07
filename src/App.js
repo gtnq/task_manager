@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import  Home  from "./admin";
+import Home from "./admin";
 import { Worker } from "./worker";
 //import readFile from "fs"
 
-let page = 'text';
+let page = "text";
 let data = require("./data.json");
 
 let admins = data.admin;
 //let file = require('fs')
 let workers = data.worker;
 
-console.log(admins.length, workers.length, );
-function auth(user, pw,setAdmin, setWorker) {
+console.log(admins.length, workers.length);
+function auth(user, pw, setAdmin, setWorker, setLog) {
 	let admin = false,
 		worker = false,
 		len;
-	console.log(user, typeof(pw));
+	console.log(user, typeof pw);
 	if (admins.length < workers.length) {
 		len = workers.length;
 	} else {
@@ -24,43 +24,54 @@ function auth(user, pw,setAdmin, setWorker) {
 	for (let i = 0; i < len; i++) {
 		console.log(i, admins.length);
 		if (admins.length > i) {
-			console.log('admin check')
-			console.log(admins[i].username === user, 'user',  admins[i].password === pw, "admin pw");
+			console.log("admin check");
+			console.log(
+				admins[i].username === user,
+				"user",
+				admins[i].password === pw,
+				"admin pw"
+			);
 			if (admins[i].username === user && admins[i].password === pw) {
 				admin = true;
 				break;
 			}
-		} 
+		}
 		if (i > workers.length) {
-			console.log('worker check')
-			console.log(workers[i].username === user, 'user',  workers[i].password === pw, "admin pw");
-
+			console.log("worker check");
+			console.log(
+				workers[i].username === user,
+				"user",
+				workers[i].password === pw,
+				"admin pw"
+			);
 
 			if (workers[i].username === user && workers[i].password === pw) {
-
 				worker = true;
 				break;
 			}
 		}
 	}
-	console.log('bool', admin, worker)
+	console.log("bool", admin, worker);
 	if (admin) {
-		setAdmin(true)
+		setAdmin(true);
+		setLog(false);
 	} else if (worker) {
-		setWorker(true)
+		setWorker(true);
+		setLog(false);
 	} else {
-		return alert('User Not found')
-			
+		return alert("User Not found");
 	}
-	console.log(page)
+	console.log(page);
 }
 
-export default function App() {
+function Login(props) {
 	const [user, setUser] = useState(""),
-		[pw, setPw] = useState(""),
-		[ad, setAdmin] = useState(false),
-		[worker, setWorker] = useState(false);
-	console.log(ad, 'aw')
+		[pw, setPw] = useState("");
+
+	//console.log(ad, "aw");
+	if (props.adminPage) {
+		props.adminPage(false);
+	}
 	return (
 		<>
 			<div id="username">
@@ -77,8 +88,31 @@ export default function App() {
 					onChange={(e) => setPw(e.target.value)}
 				/>
 			</div>
-			<button onClick={() => auth(user, pw, setAdmin, setWorker)}>Submit</button>
-			<div>{ad && <Home />}</div>
+			<button
+				onClick={() =>
+					auth(user, pw, props.admin, props.work, props.log)
+				}>
+				Submits
+			</button>
+		</>
+	);
+}
+
+export default function App(props) {
+	const [ad, setAdmin] = useState(false),
+		[worker, setWorker] = useState(false),
+		[log, setLog] = useState(true);
+	console.log(props.return)
+	return (
+		<>
+			{log && (
+				<Login
+					work={setWorker}
+					admin={setAdmin}
+					log={setLog}
+				/>
+			)}
+			<div>{ad && <Home admin={setAdmin} log = {setLog} />}</div>
 			<div>{worker && <Worker />}</div>
 		</>
 	);
