@@ -1,11 +1,35 @@
 {
 	"admin": [
 		{
-			"firstName": "tony",
-			"lastName": "yu",
-			"password": 12314
+			"firstName": "susan",
+			"lastName": "yang",
+			"password": "12314",
+			"username": "chaoren23456"
 		}
 	],
-	"worker": [],
+	"worker": [{
+		"firstName": "tony",
+		"lastName": "yu",
+		"password": "321345",
+		"username": "chaoren2345"
+	},
+	{
+		"firstName": "tony1",
+		"lastName": "yu",
+		"password": "321346",
+		"username": "chaoren234"
+	},
+	{
+		"firstName": "tony2",
+		"lastName": "yu",
+		"password": "321347",
+		"username": "chaoren23"
+	},
+	{
+		"firstName": "tony3",
+		"lastName": "yu",
+		"password": "321348",
+		"username": "chaoren2"
+	}],
 	"tasks": []
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
+import App from "./App";
 
 
 
@@ -9,7 +10,7 @@ const Assignment = function (t, w, d) {
 	this.due = d;
 };
 
-export function Admin() {
+ function Admin() {
 	const [tasks, addTasks] = useState(["q"]),
 		[selectTask, getSelectTask] = useState(),
 		[current_task, setCurrentTask] = useState(""),
@@ -189,6 +190,8 @@ export function Admin() {
 	return (
 		<>
 			<button onClick={() => assigningTasks()}>Save Selected</button>
+            <button onClick={() => {App()}}>Save Selected</button>
+
 			<h2>tasks</h2>
 			<input
 				type="textarea"
@@ -263,6 +266,11 @@ export function Admin() {
 			<hr />
 			<h3 id="assigned">assigned_tasks</h3>
 			<div id="list_assigned">{}</div>
+
 		</>
 	);
+}
+
+export default function Home() {
+    return <Admin />
 }
