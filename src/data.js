@@ -1,14 +1,11 @@
-const adminLogin =[]
+const login =[]       //firstname,lastname,admin?,password
 
-const workerLogin = []
-
-const tasks = []
+const tasks = []        //task name, task detail, workers assigned
 
 
 
 export default  {
-    adminLogin,
-    workerLogin,
+    login,
     tasks
 }
 
