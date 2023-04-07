@@ -13,6 +13,11 @@ function Workers() {
 function Dues() {
 	return;
 }
+const Assignment = function(t, w, d) {
+	this.task = t
+	this.workers = w
+	this.due = d
+}
 
 function Body() {
 	const [tasks, addTasks] = useState(['q']),
@@ -30,19 +35,16 @@ function Body() {
 		[dueDate, getDueDate] = useState(new Date()),
 		//
 		//
-		[assignTask, setAssignTask] = useState({
-			task: '',
-			worker: '',
-			due: ''
-		}),
+		[assignTask, setAssignTask] = useState(),
 		[assignedTasks, setAssignedTask] = useState([]);
 
 	const assigningTasks = () => {
-		if (finish && selected_workers && selectTask) {
-			let assignment = {
-				task: selectTask,
-				worker: selected_workers,
-				due: finish
+		if (finish && selected_workers.length && selectTask) {
+			let t = selectTask, w = selected_workers, d = finish
+			const assignment = {
+				task: t,
+				worker: w,
+				due: d
 			};
 			console.log(assignment, "assignment");
 
