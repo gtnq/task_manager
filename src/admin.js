@@ -188,12 +188,6 @@ function Admin() {
 	return (
 		<>
 			<button onClick={() => assigningTasks()}>Save Selected</button>
-			<button
-				onClick={() => {
-					App();
-				}}>
-				Save Selected
-			</button>
 
 			<h2>tasks</h2>
 			<input
@@ -277,8 +271,14 @@ function Load(props) {
 	return (
 		<>
 			<h1>Task Manager</h1>
-            <button onClick = {() => {props.admin(false); props.log(true)}}>return</button>
-            
+			<button
+				onClick={() => {
+					props.admin(false);
+					props.log(true);
+				}}>
+				return
+			</button>
+
 			<Admin />
 		</>
 	);
@@ -290,8 +290,13 @@ export default function Home(props) {
 	//console.log(props.return)
 	return (
 		<>
-            {log && <App return = {true} />}
-			{admin && <Load admin = {setAdmin} log = {setLog}/> }
+			{log && <App return={true} />}
+			{admin && (
+				<Load
+					admin={setAdmin}
+					log={setLog}
+				/>
+			)}
 		</>
 	);
 }

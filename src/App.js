@@ -10,21 +10,21 @@ let admins = data.admin;
 //let file = require('fs')
 let workers = data.worker;
 
-console.log(admins.length, workers.length);
+//console.log(admins.length, workers.length);
 function auth(user, pw, setAdmin, setWorker, setLog) {
 	let admin = false,
 		worker = false,
 		len;
-	console.log(user, typeof pw);
+	//console.log(user, typeof pw);
 	if (admins.length < workers.length) {
 		len = workers.length;
 	} else {
 		len = admins.length;
 	}
 	for (let i = 0; i < len; i++) {
-		console.log(i, admins.length);
+		//console.log(i, admins.length);
 		if (admins.length > i) {
-			console.log("admin check");
+			//console.log("admin check");
 			console.log(
 				admins[i].username === user,
 				"user",
@@ -37,7 +37,7 @@ function auth(user, pw, setAdmin, setWorker, setLog) {
 			}
 		}
 		if (workers.length > i) {
-			console.log("worker check");
+			//console.log("worker check");
 			console.log(
 				workers[i].username === user,
 				"user",
@@ -79,6 +79,7 @@ function Login(props) {
 				<input
 					id="user"
 					onChange={(e) => setUser(e.target.value)}
+					placeholder = "Your Username Please"
 				/>
 			</div>
 			<div id="password">
@@ -86,6 +87,7 @@ function Login(props) {
 				<input
 					id="pw"
 					onChange={(e) => setPw(e.target.value)}
+					placeholder = "Your Password Here"
 				/>
 			</div>
 			<button

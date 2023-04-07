@@ -31,5 +31,23 @@
 		"password": "321348",
 		"username": "chaoren2"
 	}],
-	"tasks": []
+	"tasks": [
+		{
+			"name":"help",
+			"worker" : [],
+			"completed" : false
+		},
+
+		{
+			"name":"me",
+			"worker" : [],
+			"completed" : false
+		},
+
+		{
+			"name":"test",
+			"worker" : [],
+			"completed" : false
+		}
+	]
 }
