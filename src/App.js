@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 
+let fs = require('fs')
+
 const Assignment = function (t, w, d) {
 	this.task = t;
 	this.workers = w;
