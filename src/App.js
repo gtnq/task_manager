@@ -30,7 +30,11 @@ function Body() {
 		[dueDate, getDueDate] = useState(new Date()),
 		//
 		//
-		[assignTask, setAssignTask] = useState(),
+		[assignTask, setAssignTask] = useState({
+			task: '',
+			worker: '',
+			due: ''
+		}),
 		[assignedTasks, setAssignedTask] = useState([]);
 
 	const assigningTasks = () => {
@@ -40,10 +44,10 @@ function Body() {
 				worker: selected_workers,
 				due: finish
 			};
+			console.log(assignment, "assignment");
 
 			setAssignTask(assignment);
-			setAssignedTask([assignTask, ...assignedTasks]);
-			console.log(assignment, "assignment");
+			setAssignedTask([assignment, ...assignedTasks]);
 			console.log(assignTask, "assignTask");
 			console.log(assignedTasks, "assignedTasks");
 
