@@ -47,7 +47,7 @@ function Body() {
 			console.log(assignment, "assignment");
 
 			setAssignTask(assignment);
-			setAssignedTask([assignment, ...assignedTasks]);
+			setAssignedTask([assignTask, ...assignedTasks]);
 			console.log(assignTask, "assignTask");
 			console.log(assignedTasks, "assignedTasks");
 
