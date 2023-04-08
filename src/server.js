@@ -3,6 +3,27 @@ let express = require('express')
 let app = express()
 
 
+app.get('/admins/:adminID?', function(req, res) {
+   let data = []
+   let statement = "SELECT * FROM admin";
+   if (req.params.adminID != undefined) {
+      statement += " WHERE id = ?"
+      data = [req.params.adminID];
+      console.log(statement)
+   } else {
+      statement += " ORDER BY id";
+   }
+   connection.query(statement, data, function(errQuery, rows) {
+      if (errQuery) {
+         console.log('err')
+      } else if (rows) {
+         console.log('successful')
+         res.json({rows: rows, err: ''})
+      }else {
+         console.log('id not found')
+      }
+   })
+})
 
 
 
@@ -12,7 +33,7 @@ let connection = mysql.createConnection({
     port: "3306",
     user: "root",
     password: "Ysc19981208",
-    database: "alumni_web"
+    database: "task_manager"
 });
 
  connection.connect(function(err) {
