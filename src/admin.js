@@ -22,11 +22,15 @@ function Admin(props) {
 		[assignTask, setAssignTask] = useState(),
 		[assignedTasks, setAssignedTask] = useState([]);
 
-	const taskSql = props.taskSql;
+	const taskSql = props.taskSql,
+		workerSql = props.workerSql;  
 	//console.log(props);
+	console.log(workerSql)
 	useEffect(() => {
 		addTasks(taskSql);
+		//addWorker(workerSql)
 	}, []);
+	
 	const taskState = {
 		tasks: tasks,
 		addTasks: addTasks,
@@ -200,7 +204,7 @@ function Worker(props) {
 		setSelectWorker,
 	} = props.worker;
 
-	const addingworker = async () => {
+	const addingworker =  () => {
 		//console.log(workers);
 		let arr = current_workers.trim().split(",");
 		console.log(arr, "split arr");
@@ -210,7 +214,7 @@ function Worker(props) {
 		arr.map((item) => {
 			if (!worker.includes(item)) {
 				console.log(item, "previous", worker);
-				worker.push(item);
+				worker.push({first_name : item[0], last_name : item[1]});
 				console.log(item, worker, "status check");
 				addWorker(worker);
 				console.log(workers, "test adding result");
@@ -239,12 +243,12 @@ function Worker(props) {
 				type="checkbox"
 				id={`workers_${ind}`}
 				key={`workers_${ind}`}
-				value={items}
+				value={items.name}
 				onChange={() =>
 					addSelection(document.querySelector(`#workers_${ind}`))
 				}
 			/>
-			{items}
+			{items.name}
 			<br />
 		</div>
 	));
@@ -366,16 +370,30 @@ class Load extends Component {
 			console.log(this.state.tasksql, "task data");
 		});
 		axios.get("http://localhost:8080/workers").then((res) => {
-			const data = res.data;
+			let data = res.data;
+			
 			console.log("startloading worker");
 			this.setState({ workersql: data });
 			this.setState({ load: true });
 			console.log(this.state.workersql, "worker data");
+			//this.modifyWorker()
+			
+			
 		});
+	}
+	modifyWorker(items){
+		const data = items
+		let arr = []
+		data.map((item) => {
+			let str = `${item.firstName} ${item.lastName}`
+			arr.push(str)
+		})
+		console.log(arr, 'modified worker')
+		this.setState({workerSql: arr})
 	}
 
 	render() {
-		//console.log(this.state.tasksql)
+		console.log(this.state.workersql)
 		return (
 			<>
 				<h1>Task Manager</h1>
