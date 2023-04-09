@@ -12,7 +12,7 @@ let workers = data.worker;
 
 //console.log(admins.length, workers.length);
 
-function auth(user, pw, setAdmin, setWorker, setLog) {
+function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = []) {
 	let admin = false,
 		worker = false,
 		len;
