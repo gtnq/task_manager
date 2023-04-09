@@ -53,7 +53,7 @@ function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = 
 			}
 		}
 
-	console.log("bool", admin, worker);
+	//console.log("bool", admin, worker);
 	if (admin) {
 		setAdmin(true);
 		setLog(false);
@@ -63,7 +63,7 @@ function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = 
 	} else {
 		return alert("User Not found");
 	}
-	console.log(page);
+	//console.log(page);
 }
 
 function Login(props) {
@@ -94,8 +94,8 @@ function Login(props) {
 			});
 	}, []);
 
-	console.log(adminData, "admin");
-	console.log(workerData, "worker");
+	//console.log(adminData, "admin");
+	//console.log(workerData, "worker");
 	if (props.adminPage) {
 		props.adminPage(false);
 	}
@@ -131,7 +131,7 @@ export default function App(props) {
 	const [ad, setAdmin] = useState(false),
 		[worker, setWorker] = useState(false),
 		[log, setLog] = useState(true);
-	console.log(props.return);
+	//console.log(props.return);
 	return (
 		<>
 			{log && (

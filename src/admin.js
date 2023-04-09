@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import App from "./App";
+import axios from "axios";
 
-function Admin() {
+function Admin(props) {
 	const [tasks, addTasks] = useState([]),
 		[selectTask, getSelectTask] = useState(),
 		[current_task, setCurrentTask] = useState(""),
@@ -21,6 +22,11 @@ function Admin() {
 		[assignTask, setAssignTask] = useState(),
 		[assignedTasks, setAssignedTask] = useState([]);
 
+	const taskSql = props.taskSql;
+	//console.log(props);
+	useEffect(() => {
+		addTasks(taskSql);
+	}, []);
 	const taskState = {
 		tasks: tasks,
 		addTasks: addTasks,
@@ -104,9 +110,7 @@ function Admin() {
 		</>;
 	});
 	*/
-
-
-
+	console.log(tasks, "tasks");
 	return (
 		<>
 			<button onClick={() => assigningTasks()}>Save Selected</button>
@@ -126,22 +130,45 @@ function Tasks(props) {
 		current_task,
 		setCurrentTask,
 	} = props.tasks;
+
+	const taskChecker = () => {
+		console.log(current_task[0].task_name, "testchecker");
+
+		if (!tasks.includes(current_task[0])) {
+			addTasks([current_task[0], ...tasks]);
+		}
+	};
+	/*
+	const taskSql = props.tasksql;
+
+	//console.log(taskSql);
+	const useMountEffect =() => useEffect(() => {
+		function taskSqlLoader() {
+			taskSql.map((item) => {
+				setCurrentTask([{ task_name: item.task_name }]);
+				
+				taskChecker(); 
+				console.log(tasks)
+			});
+		}
+		taskSqlLoader();
+	}, []);
+	useMountEffect()
+	//console.log(taskssql)   */
 	let tasksList = tasks.map((items, ind) => (
 		<>
 			<input
 				type="checkbox"
 				id={`tasks_${ind}`}
 				key={`tasks_${ind}`}
-				onChange={() => getSelectTask(items)}
-				checked={selectTask == items}
+				onChange={() => getSelectTask(items.task_name)}
+				checked={selectTask === items.task_name}
 			/>
-			{items}
+			{items.task_name}
 			<br />
 		</>
 	));
-	const taskChecker = () => {
-		if (!tasks.includes(current_task)) addTasks([current_task, ...tasks]);
-	};
+
 	return (
 		<>
 			<h2>tasks</h2>
@@ -149,18 +176,16 @@ function Tasks(props) {
 				type="textarea"
 				id="tasks_input"
 				placeholder="One Task at a time please"
-				onChange={(evt) => setCurrentTask(evt.target.value)}></input>
+				onChange={(evt) =>
+					setCurrentTask([{ task_name: evt.target.value }])
+				}></input>
 			<button
 				id="save_tasks"
 				onClick={() => taskChecker()}>
 				Save
 			</button>
 			<br />
-			<div
-				id="tasks"
-				multiple>
-				{tasksList}
-			</div>
+			<div id="tasks">{tasksList}</div>
 		</>
 	);
 }
@@ -325,21 +350,52 @@ function Due(props) {
 	);
 }
 
-function Load(props) {
-	return (
-		<>
-			<h1>Task Manager</h1>
-			<button
-				onClick={() => {
-					props.admin(false);
-					props.log(true);
-				}}>
-				return
-			</button>
+class Load extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { tasksql: [], load: false, workersql: [] };
+		this.admin = props.admin;
+		this.log = props.log;
+	}
 
-			<Admin />
-		</>
-	);
+	componentDidMount() {
+		axios.get("http://localhost:8080/tasks").then((res) => {
+			const data = res.data;
+			console.log("startloading task");
+			this.setState({ tasksql: data });
+			console.log(this.state.tasksql, "task data");
+		});
+		axios.get("http://localhost:8080/workers").then((res) => {
+			const data = res.data;
+			console.log("startloading worker");
+			this.setState({ workersql: data });
+			this.setState({ load: true });
+			console.log(this.state.workersql, "worker data");
+		});
+	}
+
+	render() {
+		//console.log(this.state.tasksql)
+		return (
+			<>
+				<h1>Task Manager</h1>
+				<button
+					onClick={() => {
+						this.admin(false);
+						this.log(true);
+					}}>
+					return
+				</button>
+
+				{this.state.load && (
+					<Admin
+						taskSql={this.state.tasksql}
+						workerSql={this.state.workersql}
+					/>
+				)}
+			</>
+		);
+	}
 }
 
 export default function Home(props) {

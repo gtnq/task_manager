@@ -68,7 +68,7 @@ app.get('/tasks/:taskID?', function(req, res) {
       if (errQuery) {
          console.log('err')
       } else if (rows) {
-         console.log('successful, workers')
+         console.log('successful, tasks')
          res.json(rows)
       }else {
          console.log('id not found')
