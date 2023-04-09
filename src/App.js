@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Home from "./admin";
-import  Worker  from "./worker";
+import Worker from "./worker";
 //import readFile from "fs"
 
 let page = "text";
@@ -11,11 +11,12 @@ let admins = data.admin;
 let workers = data.worker;
 
 //console.log(admins.length, workers.length);
+
 function auth(user, pw, setAdmin, setWorker, setLog) {
 	let admin = false,
 		worker = false,
 		len;
-	//console.log(user, typeof pw);
+
 	if (admins.length < workers.length) {
 		len = workers.length;
 	} else {
@@ -64,11 +65,25 @@ function auth(user, pw, setAdmin, setWorker, setLog) {
 	console.log(page);
 }
 
-function Login(props) {
-	const [user, setUser] = useState(""),
-		[pw, setPw] = useState("");
+function savedata(item) {}
 
-	//console.log(ad, "aw");
+function Login(props) {
+	const [user, setUser] = useState(),
+		[pw, setPw] = useState(),
+		[adminData, setAdminData] = useState([]);
+	//console.log(user, typeof pw);
+	useEffect(() => {
+		fetch("http://localhost:8080/admins")
+			.then((res) => {
+				return res.json();
+			})
+			.then((data) => {
+				console.log(typeof data);
+				setAdminData(data);
+			});
+	}, []);
+
+	console.log(adminData, "aw");
 	if (props.adminPage) {
 		props.adminPage(false);
 	}
@@ -79,7 +94,7 @@ function Login(props) {
 				<input
 					id="user"
 					onChange={(e) => setUser(e.target.value)}
-					placeholder = "Your Username Please"
+					placeholder="Your Username Please"
 				/>
 			</div>
 			<div id="password">
@@ -87,13 +102,13 @@ function Login(props) {
 				<input
 					id="pw"
 					onChange={(e) => setPw(e.target.value)}
-					placeholder = "Your Password Here"
+					placeholder="Your Password Here"
 				/>
 			</div>
 			<button
-				onClick={() =>
-					auth(user, pw, props.admin, props.work, props.log)
-				}>
+				onClick={() => {
+					auth(user, pw, props.admin, props.work, props.log);
+				}}>
 				Submits
 			</button>
 		</>
@@ -104,7 +119,7 @@ export default function App(props) {
 	const [ad, setAdmin] = useState(false),
 		[worker, setWorker] = useState(false),
 		[log, setLog] = useState(true);
-	console.log(props.return)
+	console.log(props.return);
 	return (
 		<>
 			{log && (

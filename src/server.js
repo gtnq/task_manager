@@ -1,6 +1,13 @@
 let mysql = require('mysql2')
 let express = require('express')
 let app = express()
+let cors = require('cors')
+let bodyParser = require("body-parser");
+
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
 
 app.get('/admins/:adminID?', function(req, res) {
@@ -18,7 +25,7 @@ app.get('/admins/:adminID?', function(req, res) {
          console.log('err')
       } else if (rows) {
          console.log('successful')
-         res.json({rows: rows, err: ''})
+         res.json(rows)
       }else {
          console.log('id not found')
       }
