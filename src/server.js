@@ -24,7 +24,29 @@ app.get('/admins/:adminID?', function(req, res) {
       if (errQuery) {
          console.log('err')
       } else if (rows) {
-         console.log('successful')
+         console.log('successful, admins')
+         res.json(rows)
+      }else {
+         console.log('id not found')
+      }
+   })
+})
+
+app.get('/workers/:workerID?', function(req, res) {
+   let data = []
+   let statement = "SELECT * FROM worker";
+   if (req.params.workerID != undefined) {
+      statement += " WHERE id = ?"
+      data = [req.params.workerID];
+      console.log(statement)
+   } else {
+      statement += " ORDER BY id";
+   }
+   connection.query(statement, data, function(errQuery, rows) {
+      if (errQuery) {
+         console.log('err')
+      } else if (rows) {
+         console.log('successful, workers')
          res.json(rows)
       }else {
          console.log('id not found')
