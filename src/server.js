@@ -54,6 +54,29 @@ app.get('/workers/:workerID?', function(req, res) {
    })
 })
 
+app.get('/tasks/:taskID?', function(req, res) {
+   let data = []
+   let statement = "SELECT * FROM tasks";
+   if (req.params.taskID != undefined) {
+      statement += " WHERE id = ?"
+      data = [req.params.taskID];
+      console.log(statement)
+   } else {
+      statement += " ORDER BY id";
+   }
+   connection.query(statement, data, function(errQuery, rows) {
+      if (errQuery) {
+         console.log('err')
+      } else if (rows) {
+         console.log('successful, workers')
+         res.json(rows)
+      }else {
+         console.log('id not found')
+      }
+   })
+})
+
+
 
 
 
