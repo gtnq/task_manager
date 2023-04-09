@@ -2,30 +2,51 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import App from "./App";
 
-const Assignment = function (t, w, d) {
-	this.task = t;
-	this.workers = w;
-	this.due = d;
-};
-
 function Admin() {
-	const [tasks, addTasks] = useState(["q"]),
+	const [tasks, addTasks] = useState([]),
 		[selectTask, getSelectTask] = useState(),
 		[current_task, setCurrentTask] = useState(""),
 		//
 		//
-		[workers, addWorker] = useState(["w"]),
+		[workers, addWorker] = useState([]),
 		[current_workers, setCurrentWorker] = useState(""),
 		[selected_workers, setSelectWorker] = useState([]),
 		//
 		//
-		[dues, addDues] = useState([new Date()]),
+		[dues, addDues] = useState([]),
 		[finish, getFinish] = useState(),
 		[dueDate, getDueDate] = useState(new Date()),
 		//
 		//
 		[assignTask, setAssignTask] = useState(),
 		[assignedTasks, setAssignedTask] = useState([]);
+
+	const taskState = {
+		tasks: tasks,
+		addTasks: addTasks,
+		selectTask: selectTask,
+		getSelectTask: getSelectTask,
+		current_task: current_task,
+		setCurrentTask: setCurrentTask,
+	};
+
+	const workerState = {
+		workers: workers,
+		addWorker: addWorker,
+		current_workers: current_workers,
+		setCurrentWorker: setCurrentWorker,
+		selected_workers: selected_workers,
+		setSelectWorker: setSelectWorker,
+	};
+
+	const dueState = {
+		dues: dues,
+		addDues: addDues,
+		finish: finish,
+		getFinish: getFinish,
+		dueDate: dueDate,
+		getDueDate: getDueDate,
+	};
 
 	const assigningTasks = () => {
 		if (finish && selected_workers.length && selectTask) {
@@ -84,6 +105,27 @@ function Admin() {
 	});
 	*/
 
+
+
+	return (
+		<>
+			<button onClick={() => assigningTasks()}>Save Selected</button>
+			<Tasks tasks={taskState} />
+			<Worker worker={workerState} />
+			<Due dues={dueState} />
+		</>
+	);
+}
+
+function Tasks(props) {
+	const {
+		tasks,
+		addTasks,
+		selectTask,
+		getSelectTask,
+		current_task,
+		setCurrentTask,
+	} = props.tasks;
 	let tasksList = tasks.map((items, ind) => (
 		<>
 			<input
@@ -97,23 +139,41 @@ function Admin() {
 			<br />
 		</>
 	));
-	//console.log(workers, 'workers')
-
-	//console.log(dues)
-	let duesList = dues.map((items, ind) => (
+	const taskChecker = () => {
+		if (!tasks.includes(current_task)) addTasks([current_task, ...tasks]);
+	};
+	return (
 		<>
+			<h2>tasks</h2>
 			<input
-				type="checkbox"
-				id={`dues_${ind}`}
-				key={`dues_${ind}`}
-				onChange={() => getFinish(items.toString())}
-				checked={finish == items.toString()}
-			/>
-			{items.toString()}
+				type="textarea"
+				id="tasks_input"
+				placeholder="One Task at a time please"
+				onChange={(evt) => setCurrentTask(evt.target.value)}></input>
+			<button
+				id="save_tasks"
+				onClick={() => taskChecker()}>
+				Save
+			</button>
 			<br />
+			<div
+				id="tasks"
+				multiple>
+				{tasksList}
+			</div>
 		</>
-	));
-	//console.log(workers, 'worker')
+	);
+}
+
+function Worker(props) {
+	const {
+		workers,
+		addWorker,
+		current_workers,
+		setCurrentWorker,
+		selected_workers,
+		setSelectWorker,
+	} = props.worker;
 
 	const addingworker = async () => {
 		//console.log(workers);
@@ -135,19 +195,6 @@ function Admin() {
 	//console.log(dueDate, "duedate");
 	//console.log(dueTime, "duetime");
 	//console.log(dues, "dues");
-	const updateHour = (e) => {
-		let dateitem = dueDate;
-		dateitem.setHours(e.target.value);
-		console.log(dateitem);
-		getDueDate(new Date(dateitem));
-	};
-	const updateMinutes = (e) => {
-		let dateitem = dueDate;
-		console.log(dueDate);
-		dateitem.setMinutes(e.target.value);
-		console.log(dateitem);
-		getDueDate(new Date(dateitem));
-	};
 
 	let addSelection = (worker) => {
 		if (!worker.checked) {
@@ -176,37 +223,8 @@ function Admin() {
 			<br />
 		</div>
 	));
-
-	const taskChecker = () => {
-		if (!tasks.includes(current_task)) addTasks([current_task, ...tasks]);
-	};
-
-	const dueChecker = () => {
-		if (!dues.includes(dueDate)) addDues([...dues, dueDate]);
-	};
-
 	return (
 		<>
-			<button onClick={() => assigningTasks()}>Save Selected</button>
-
-			<h2>tasks</h2>
-			<input
-				type="textarea"
-				id="tasks_input"
-				placeholder="One Task at a time please"
-				onChange={(evt) => setCurrentTask(evt.target.value)}></input>
-			<button
-				id="save_tasks"
-				onClick={() => taskChecker()}>
-				Save
-			</button>
-			<br />
-			<div
-				id="tasks"
-				multiple>
-				{tasksList}
-			</div>
-
 			<h2> workers </h2>
 			<input
 				type="textarea"
@@ -223,7 +241,47 @@ function Admin() {
 				multiple>
 				{workerList}
 			</div>
+		</>
+	);
+}
 
+function Due(props) {
+	const { dues, addDues, finish, getFinish, dueDate, getDueDate } =
+		props.dues;
+
+	const dueChecker = () => {
+		if (!dues.includes(dueDate)) addDues([...dues, dueDate]);
+	};
+	let duesList = dues.map((items, ind) => (
+		<>
+			<input
+				type="checkbox"
+				id={`dues_${ind}`}
+				key={`dues_${ind}`}
+				onChange={() => getFinish(items.toString())}
+				checked={finish == items.toString()}
+			/>
+			{items.toString()}
+			<br />
+		</>
+	));
+
+	const updateHour = (e) => {
+		let dateitem = dueDate;
+		dateitem.setHours(e.target.value);
+		console.log(dateitem);
+		getDueDate(new Date(dateitem));
+	};
+	const updateMinutes = (e) => {
+		let dateitem = dueDate;
+		console.log(dueDate);
+		dateitem.setMinutes(e.target.value);
+		console.log(dateitem);
+		getDueDate(new Date(dateitem));
+	};
+
+	return (
+		<>
 			<h2> dues </h2>
 			<Calendar
 				onChange={getDueDate}
