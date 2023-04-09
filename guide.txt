@@ -11,6 +11,12 @@ Use server=> login page (authentication) (maybe special grand login for create/d
                   => Delete tasks
                   => modify authentication info for user
           => user => view the tasks => mark complete for tasks.
+
+
+Worker data => change to two input, one for firstname, one for lastname, 
+            => then save result as {firstname : khfdkj, lastname: dskjfah} - Allign with sql 
+            => div child = firstname + lastname
+            
  
 
 
