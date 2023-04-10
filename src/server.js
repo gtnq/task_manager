@@ -75,73 +75,42 @@ app.get("/tasks/:taskID?", function (req, res) {
 	});
 });
 
-app.get("/tasks/:taskID?", function (req, res) {
-	let data = [];
-	let statement = "SELECT * FROM tasks";
-	if (req.params.taskID != undefined) {
-		statement += " WHERE id = ?";
-		data = [req.params.taskID];
-		console.log(statement);
-	} else {
-		statement += " ORDER BY id";
-	}
-	connection.query(statement, data, function (errQuery, rows) {
-		if (errQuery) {
-			console.log("err");
-		} else if (rows) {
-			console.log("successful, tasks");
-			res.json(rows);
-		} else {
-			console.log("id not found");
-		}
-	});
-});
 
 app.post("/workers", function (req, res) {
 	console.log("Route /workers POST");
-	let data = {
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
-		userName: req.body.userName,
-		passCode: req.body.passCode,
-	};
-	connection.query(
-		"INSERT INTO worker SET ?",
-		data,
-		function (errQuery, result) {
-			if (errQuery) {
-				console.log(errQuery);
-				res.json({ status: "Error", err: errQuery });
-			} else {
-				//console.log("Insert ID: ", result.insertId);
-				res.json({ status: data, err: "" });
-			}
-		}
-	);
-});
+	let sql = `call addWorker("${req.body.firstName}","${req.body.lastName}","${req.body.userName}","${req.body.passCode}")`;
+	
+   
+   
+      connection.query(sql, function (errQuery, result) {
+         if (errQuery) {
+            console.log(errQuery);
+            res.json({ status: "Error", err: errQuery });
+         } else {
+            //console.log("Insert ID: ", result.insertId);
+            res.json({ status: sql, err: "" });
+         }
+      });
+   }
+);
 
-app.delete("/workers", function (req, res) {
-	console.log("Route /workers POST");
-   let sql = 'call addWOrker(?)'
-	let data = `
-		${req.body.firstName},
-      ${req.body.lastName},
-      ${req.body.userName},
-      ${req.body.passCode},
-	`;
-	connection.query(
-		sql,
-		data,
-		function (errQuery, result) {
-			if (errQuery) {
-				console.log(errQuery);
-				res.json({ status: "Error", err: errQuery });
-			} else {
-				//console.log("Insert ID: ", result.insertId);
-				res.json({ status: data, err: "" });
-			}
-		}
-	);
+app.delete("/workers/:workerID?", function (req, res) {
+	console.log("Route /workers Delete");
+	let sql = "call deleteWorker(?)";
+	
+   if(req.params.workerID != undefined) {
+      let data = [req.params.workerID]
+   
+      connection.query(sql, data, function (errQuery, result) {
+         if (errQuery) {
+            console.log(errQuery);
+            res.json({ status: "Error", err: errQuery });
+         } else {
+            //console.log("Insert ID: ", result.insertId);
+            res.json({ status: data, err: "" });
+         }
+      });
+   }
 });
 
 let connection = mysql.createConnection({

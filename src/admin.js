@@ -227,7 +227,7 @@ function Worker(props) {
 			firstName: firstname,
 			lastName: lastname,
 			userName: userName,
-			passCode: passCode
+			passCode: passCode,
 		};
 		//addWorker(arr, ...workers)
 		//for (let i = 0; i < arr.length; i++) {
@@ -244,17 +244,31 @@ function Worker(props) {
 		});
 		if (adding) {
 			console.log("added?");
-			setWorkers([worker, ...workers]);
-			postData(worker);
+			setWorkers([...workers, worker]);
+			postWorker(worker);
 		}
 	};
 
-	const postData = (worker) => {
+	const postWorker = (worker) => {
 		axios
 			.post("http://localhost:8080/workers", worker)
-			.then((res) => console.log(res))
-			
+			.then((res) => console.log(res));
 	};
+	const deleteWorker = (worker) => {
+		
+		
+		let current = workers
+		let before_workers_loc = workers.indexOf(worker)
+		current.splice(before_workers_loc, 1);
+		setWorkers(current)
+		
+		if(worker.id == undefined)
+			worker.id = 1
+		axios
+			.delete(`http://localhost:8080/workers/${worker.id} `)
+			.then((res) => console.log(res));
+
+	};			//need to delete the usestate datas
 
 	//console.log(dueDate, "duedate");
 	//console.log(dueTime, "duetime");
@@ -284,6 +298,7 @@ function Worker(props) {
 				}
 			/>
 			{items.firstName + " " + items.lastName}
+			<button onClick={() =>deleteWorker(items)}>Remove</button>
 			<br />
 		</div>
 	));
