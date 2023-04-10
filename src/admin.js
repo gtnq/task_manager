@@ -148,7 +148,9 @@ function Tasks(props) {
 		console.log(current_task[0].task_name, "testchecker");
 
 		if (!tasks.includes(current_task[0])) {
-			addTasks([current_task[0], ...tasks]);
+			addTasks([...tasks, current_task[0] ]);
+			axios.post(`http://localhost:8080/tasks`, current_task[0])
+			.then(res => console.log(res))
 		}
 	};
 	/*

@@ -75,6 +75,21 @@ app.get("/tasks/:taskID?", function (req, res) {
 	});
 });
 
+app.post("/tasks", function (req, res) {
+	console.log("Route /tasks POST");
+	let sql = `call addTasks("${req.body.task_name}")`;
+	
+      connection.query(sql, function (errQuery, result) {
+         if (errQuery) {
+            console.log(errQuery);
+            res.json({ status: "Error", err: errQuery });
+         } else {
+            //console.log("Insert ID: ", result.insertId);
+            res.json({ status: sql, err: "" });
+         }
+      });
+   }
+);
 
 app.post("/workers", function (req, res) {
 	console.log("Route /workers POST");
