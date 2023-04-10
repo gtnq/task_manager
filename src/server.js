@@ -105,17 +105,43 @@ app.post("/workers", function (req, res) {
 		userName: req.body.userName,
 		passCode: req.body.passCode,
 	};
-   connection.query('INSERT INTO worker SET ?', data,
-      function (errQuery, result) {
-         if (errQuery) {
-            console.log(errQuery);
-            res.json({status: "Error", err: errQuery});
-         } else {
-            //console.log("Insert ID: ", result.insertId);
-            res.json({status: data, err: ""});
-         } 
-      }
-   )
+	connection.query(
+		"INSERT INTO worker SET ?",
+		data,
+		function (errQuery, result) {
+			if (errQuery) {
+				console.log(errQuery);
+				res.json({ status: "Error", err: errQuery });
+			} else {
+				//console.log("Insert ID: ", result.insertId);
+				res.json({ status: data, err: "" });
+			}
+		}
+	);
+});
+
+app.delete("/workers", function (req, res) {
+	console.log("Route /workers POST");
+   let sql = 'call addWOrker(?)'
+	let data = `
+		${req.body.firstName},
+      ${req.body.lastName},
+      ${req.body.userName},
+      ${req.body.passCode},
+	`;
+	connection.query(
+		sql,
+		data,
+		function (errQuery, result) {
+			if (errQuery) {
+				console.log(errQuery);
+				res.json({ status: "Error", err: errQuery });
+			} else {
+				//console.log("Insert ID: ", result.insertId);
+				res.json({ status: data, err: "" });
+			}
+		}
+	);
 });
 
 let connection = mysql.createConnection({
