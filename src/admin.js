@@ -9,8 +9,11 @@ function Admin(props) {
 		[current_task, setCurrentTask] = useState(""),
 		//
 		//
-		[workers, addWorker] = useState([]),
-		[current_workers, setCurrentWorker] = useState(""),
+		[firstname, setFirstname] = useState(""),
+		[lastname, setLastname] = useState(""),
+		[workers, setWorkers] = useState([]),
+		[userName, setUsername] = useState(""),
+		[passCode, setPassCode] = useState(""),
 		[selected_workers, setSelectWorker] = useState([]),
 		//
 		//
@@ -23,14 +26,14 @@ function Admin(props) {
 		[assignedTasks, setAssignedTask] = useState([]);
 
 	const taskSql = props.taskSql,
-		workerSql = props.workerSql;  
+		workerSql = props.workerSql;
 	//console.log(props);
-	console.log(workerSql)
+	//console.log(workerSql);
 	useEffect(() => {
 		addTasks(taskSql);
-		//addWorker(workerSql)
+		setWorkers(workerSql);
 	}, []);
-	
+
 	const taskState = {
 		tasks: tasks,
 		addTasks: addTasks,
@@ -41,10 +44,16 @@ function Admin(props) {
 	};
 
 	const workerState = {
+		userName: userName,
+		setUsername: setUsername,
+		passCode: passCode,
+		setPassCode: setPassCode,
 		workers: workers,
-		addWorker: addWorker,
-		current_workers: current_workers,
-		setCurrentWorker: setCurrentWorker,
+		setWorkers: setWorkers,
+		firstname: firstname,
+		setFirstname: setFirstname,
+		lastname: lastname,
+		setLastname: setLastname,
 		selected_workers: selected_workers,
 		setSelectWorker: setSelectWorker,
 	};
@@ -92,7 +101,7 @@ function Admin(props) {
 
 			//
 			addTasks(before_tasks);
-			addWorker(before_workers);
+			setWorkers(before_workers);
 			addDues(before_dues);
 		} else {
 			alert("please select something PLEASE");
@@ -114,7 +123,7 @@ function Admin(props) {
 		</>;
 	});
 	*/
-	console.log(tasks, "tasks");
+	//console.log(tasks, "tasks");
 	return (
 		<>
 			<button onClick={() => assigningTasks()}>Save Selected</button>
@@ -196,31 +205,57 @@ function Tasks(props) {
 
 function Worker(props) {
 	const {
+		userName,
+		setUsername,
+		passCode,
+		setPassCode,
+		firstname,
+		setFirstname,
 		workers,
-		addWorker,
-		current_workers,
-		setCurrentWorker,
+		setWorkers,
+		lastname,
+		setLastname,
 		selected_workers,
 		setSelectWorker,
 	} = props.worker;
 
-	const addingworker =  () => {
+	const addingworker = () => {
 		//console.log(workers);
-		let arr = current_workers.trim().split(",");
-		console.log(arr, "split arr");
-		let worker = workers;
+		//let arr = current_workers.trim().split(",");
+		//console.log(arr, "split arr");
+		let worker = {
+			firstName: firstname,
+			lastName: lastname,
+			userName: userName,
+			passCode: passCode
+		};
 		//addWorker(arr, ...workers)
 		//for (let i = 0; i < arr.length; i++) {
-		arr.map((item) => {
-			if (!worker.includes(item)) {
-				console.log(item, "previous", worker);
-				worker.push({first_name : item[0], last_name : item[1]});
-				console.log(item, worker, "status check");
-				addWorker(worker);
-				console.log(workers, "test adding result");
+		let adding = true;
+		workers.map((item) => {
+			//console.log(worker.firstName == item.firstName ,' and ',worker.lastName ==item.lastName)
+			if (
+				worker.firstName == item.firstName &&
+				worker.lastName == item.lastName
+			) {
+				adding = false;
 			}
+			//console.log(adding)
 		});
+		if (adding) {
+			console.log("added?");
+			setWorkers([worker, ...workers]);
+			postData(worker);
+		}
 	};
+
+	const postData = (worker) => {
+		axios
+			.post("http://localhost:8080/workers", worker)
+			.then((res) => console.log(res))
+			
+	};
+
 	//console.log(dueDate, "duedate");
 	//console.log(dueTime, "duetime");
 	//console.log(dues, "dues");
@@ -243,23 +278,39 @@ function Worker(props) {
 				type="checkbox"
 				id={`workers_${ind}`}
 				key={`workers_${ind}`}
-				value={items.name}
+				value={items.firstName + " " + items.lastName}
 				onChange={() =>
 					addSelection(document.querySelector(`#workers_${ind}`))
 				}
 			/>
-			{items.name}
+			{items.firstName + " " + items.lastName}
 			<br />
 		</div>
 	));
+
 	return (
 		<>
 			<h2> workers </h2>
 			<input
 				type="textarea"
-				id="workers_input"
-				placeholder="comma after each worker please"
-				onChange={(evt) => setCurrentWorker(evt.target.value)}></input>
+				id="workerFirstname"
+				placeholder="First_name"
+				onChange={(evt) => setFirstname(evt.target.value)}></input>
+			<input
+				type="textarea"
+				id="workerLirstname"
+				placeholder="Last_name"
+				onChange={(evt) => setLastname(evt.target.value)}></input>
+			<input
+				type="textarea"
+				id="workerUserID"
+				placeholder="worker's login here"
+				onChange={(evt) => setUsername(evt.target.value)}></input>
+			<input
+				type="textarea"
+				id="workerpassword"
+				placeholder="worker's password here"
+				onChange={(evt) => setPassCode(evt.target.value)}></input>
 			<button
 				id="save_worker"
 				onClick={() => addingworker()}>
@@ -365,35 +416,33 @@ class Load extends Component {
 	componentDidMount() {
 		axios.get("http://localhost:8080/tasks").then((res) => {
 			const data = res.data;
-			console.log("startloading task");
+			//console.log("startloading task");
 			this.setState({ tasksql: data });
-			console.log(this.state.tasksql, "task data");
+			//console.log(this.state.tasksql, "task data");
 		});
 		axios.get("http://localhost:8080/workers").then((res) => {
 			let data = res.data;
-			
-			console.log("startloading worker");
+
+			//console.log("startloading worker");
 			this.setState({ workersql: data });
 			this.setState({ load: true });
-			console.log(this.state.workersql, "worker data");
+			//console.log(this.state.workersql, "worker data");
 			//this.modifyWorker()
-			
-			
 		});
 	}
-	modifyWorker(items){
-		const data = items
-		let arr = []
+	modifyWorker(items) {
+		const data = items;
+		let arr = [];
 		data.map((item) => {
-			let str = `${item.firstName} ${item.lastName}`
-			arr.push(str)
-		})
-		console.log(arr, 'modified worker')
-		this.setState({workerSql: arr})
+			let str = `${item.firstName} ${item.lastName}`;
+			arr.push(str);
+		});
+		//console.log(arr, "modified worker");
+		this.setState({ workerSql: arr });
 	}
 
 	render() {
-		console.log(this.state.workersql)
+		//console.log(this.state.workersql);
 		return (
 			<>
 				<h1>Task Manager</h1>
