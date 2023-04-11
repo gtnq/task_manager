@@ -5,7 +5,7 @@ import axios from "axios";
 
 function Admin(props) {
 	const [tasks, addTasks] = useState([]),
-		[selectTask, getSelectTask] = useState(),
+		[selectTask, getSelectTask] = useState(),  //THis one
 		[current_task, setCurrentTask] = useState(""),
 		//
 		//
@@ -67,24 +67,53 @@ function Admin(props) {
 		getDueDate: getDueDate,
 	};
 
+	const assignState = {
+		assignTask: assignTask,
+		setAssignTask: setAssignTask,
+		assignedTasks: assignedTasks,
+		setAssignedTask: setAssignedTask,
+		finish: finish,
+		selected_workers:selected_workers,
+		selectTask:selectTask
+		
+	}
+
+	
+	return (
+		<>
+			<Assign assigns = {assignState} />
+			<Tasks tasks={taskState} />
+			<Worker worker={workerState} />
+			<Due dues={dueState} />
+		</>
+	);
+}
+
+function Assign(props) {
+	const {assignTask,
+		setAssignTask,
+		assignedTasks,
+		setAssignedTask,
+		finish,
+		selected_workers,
+		selectTask} = props.assigns
 	const assigningTasks = () => {
+		//console.log(finish, selected_workers, selectTask)
 		if (finish && selected_workers.length && selectTask) {
-			let t = selectTask,
-				w = selected_workers,
-				d = finish;
+
 			const assignment = {
-				task: t,
-				worker: w,
-				due: d,
+				task: selectTask,
+				worker: selected_workers,
+				due: finish,
 			};
 			console.log(assignment, "assignment");
 
 			setAssignTask(assignment);
-			setAssignedTask([assignTask, ...assignedTasks]);
+			setAssignedTask([assignment, ...assignedTasks]);
 			console.log(assignTask, "assignTask");
 			console.log(assignedTasks, "assignedTasks");
 
-			//
+			/*
 			let before_tasks = tasks,
 				before_workers = workers,
 				before_dues = dues;
@@ -102,7 +131,7 @@ function Admin(props) {
 			//
 			addTasks(before_tasks);
 			setWorkers(before_workers);
-			addDues(before_dues);
+			addDues(before_dues); */
 		} else {
 			alert("please select something PLEASE");
 		}
@@ -124,14 +153,7 @@ function Admin(props) {
 	});
 	*/
 	//console.log(tasks, "tasks");
-	return (
-		<>
-			<button onClick={() => assigningTasks()}>Save Selected</button>
-			<Tasks tasks={taskState} />
-			<Worker worker={workerState} />
-			<Due dues={dueState} />
-		</>
-	);
+	return <button onClick={() => assigningTasks()}>Save Selected</button>;
 }
 
 function Tasks(props) {
@@ -179,6 +201,7 @@ function Tasks(props) {
 				onChange={() => getSelectTask(items.task_name)}
 				checked={selectTask === items.task_name}
 			/>
+			{/*console.log(selectTask) saved*/}
 			{items.task_name}
 			<br />
 		</>
