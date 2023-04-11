@@ -22,8 +22,8 @@ function Admin(props) {
 		[dueDate, getDueDate] = useState(new Date()),
 		//
 		//
-		[assignTask, setAssignTask] = useState("dog"),
-		[assignedTasks, setAssignedTask] = useState(["dog"]);
+		[assignTask, setAssignTask] = useState(),
+		[assignedTasks, setAssignedTask] = useState([]);
 
 	const taskSql = props.taskSql,
 		workerSql = props.workerSql;
