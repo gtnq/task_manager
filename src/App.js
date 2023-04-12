@@ -12,10 +12,10 @@ let workers = data.worker;
 
 //console.log(admins.length, workers.length);
 
-function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = []) {
+function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = [],setLoggedAdmin, setLoggedWorker) {
 	let admin = false,
 		worker = false,
-		len;
+		len, loginName;
 
 		if (adminsql.length < workersql.length) {
 			len = workersql.length;
@@ -34,6 +34,7 @@ function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = 
 				);
 				if (adminsql[i].userName === user && adminsql[i].password === pw) {
 					admin = true;
+					loginName = adminsql[i].firs
 					break;
 				}
 			}
@@ -70,7 +71,8 @@ function Login(props) {
 	const [user, setUser] = useState(),
 		[pw, setPw] = useState(),
 		[adminData, setAdminData] = useState([]),
-		[workerData, setWorkerData] = useState([])
+		[workerData, setWorkerData] = useState([])	
+	const {setLoggedWorker, setLoggedAdmin} = props
 	//console.log(user, typeof pw);
 	useEffect(() => {
 		fetch("http://localhost:8080/admins")
@@ -119,7 +121,7 @@ function Login(props) {
 			</div>
 			<button
 				onClick={() => {
-					auth(user, pw, props.admin, props.work, props.log, adminData, workerData);
+					auth(user, pw, props.admin, props.work, props.log, adminData, workerData, setLoggedAdmin, setLoggedWorker);
 				}}>
 				Submits
 			</button>
@@ -130,7 +132,9 @@ function Login(props) {
 export default function App(props) {
 	const [ad, setAdmin] = useState(false),
 		[worker, setWorker] = useState(false),
-		[log, setLog] = useState(true);
+		[log, setLog] = useState(true),
+		[loggedworker, setLoggedWorker] = useState(),
+		[loggedAdmin, setLoggedAdmin] = useState();
 	//console.log(props.return);
 	return (
 		<>
@@ -139,10 +143,12 @@ export default function App(props) {
 					work={setWorker}
 					admin={setAdmin}
 					log={setLog}
+					setLogedAdmin = {setLoggedAdmin}
+					setLoggedWorker = {setLoggedWorker}
 				/>
 			)}
-			<div>{ad && <Home />}</div>
-			<div>{worker && <Worker />}</div>
+			<div>{ad && <Home adminid = {loggedAdmin}/>}</div>
+			<div>{worker && <Worker workerid = {loggedworker}/>}</div>
 		</>
 	);
 }
