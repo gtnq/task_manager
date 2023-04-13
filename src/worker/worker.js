@@ -18,6 +18,7 @@ class Workerpage extends Component {
         this.state = {tasks:[]}
 		this.worker = props.worker;
 		this.log = props.log;
+		this.id = props.id
 	}
 
 	render() {
@@ -42,13 +43,16 @@ export default function Worker(props) {
 	const [worker, setWorker] = useState(true),
 		[log, setLog] = useState(false);
 	//console.log(props.return)
+	const workerinfo = props.workerInfo
 	return (
 		<>
 			{log && <App return={true} />}
+			{worker && (<h1 id = "current_user">{workerinfo.firstName + ' ' + workerinfo.lastName}</h1>)}
 			{worker && (
 				<Workerpage
 					worker={setWorker}
 					log={setLog}
+					id = {workerinfo.id}
 				/>
 			)}
 		</>

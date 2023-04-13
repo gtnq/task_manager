@@ -4,14 +4,14 @@ import Worker from "./worker/worker";
 import Login from "./login/login"
 //import readFile from "fs"
 
-let page = "text";
-let data = require("./data.json");
+// let page = "text";
+// let data = require("./data.json");
 
-let admins = data.admin;
-//let file = require('fs')
-let workers = data.worker;
+// let admins = data.admin;
+// //let file = require('fs')
+// let workers = data.worker;
 
-//console.log(admins.length, workers.length);
+// //console.log(admins.length, workers.length);
 
 
 
@@ -30,12 +30,12 @@ export default function App(props) {
 					work={setWorker}
 					admin={setAdmin}
 					log={setLog}
-					setLogedAdmin = {setLoggedAdmin}
+					setLoggedAdmin = {setLoggedAdmin}
 					setLoggedWorker = {setLoggedWorker}
 				/>
 			)}
-			<div>{ad && <Home adminid = {loggedAdmin}/>}</div>
-			<div>{worker && <Worker workerid = {loggedworker}/>}</div>
+			<div>{ad && <Home adminName = {loggedAdmin}/>}</div>
+			<div>{worker && <Worker workerInfo = {loggedworker}/>}</div>
 		</>
 	);
 }

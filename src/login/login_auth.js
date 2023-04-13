@@ -22,7 +22,8 @@ export default function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [
 				);
 				if (adminsql[i].userName === user && adminsql[i].password === pw) {
 					admin = true;
-					loginName = adminsql[i].firs
+					loginName = adminsql[i].firstName + ' ' + adminsql[i].lastName
+					setLoggedAdmin(loginName)
 					break;
 				}
 			}
@@ -31,12 +32,14 @@ export default function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [
 				console.log(
 					workersql[i].userName === user,
 					"worker",
-					workersql[i].passCode +','+ pw,
+					workersql[i].passCode === pw,
 					"worker pw"
 				);
 	
 				if (workersql[i].userName === user && workersql[i].passCode === pw) {
 					worker = true;
+					loginName = workersql[i]
+					setLoggedWorker(loginName)
 					break;
 				}
 			}
