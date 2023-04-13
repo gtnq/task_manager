@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import App from "./App";
+import App from "../App";
 
 
 

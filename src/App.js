@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Home from "./admin";
-import Worker from "./worker";
-import Login from "./login"
+import Home from "./admin/admin";
+import Worker from "./worker/worker";
+import Login from "./login/login"
 //import readFile from "fs"
 
 let page = "text";
