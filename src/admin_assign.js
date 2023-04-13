@@ -1,6 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
 
-
 export default function Assign(props) {
 	const {
 		assignTask,
@@ -13,30 +12,25 @@ export default function Assign(props) {
 	} = props.assigns;
 
 	const assigningTasks = () => {
-		console.log('im happening', selectTask);
-	
+		console.log("im happening", selectTask);
+
 		const assignment = {
 			task: selectTask,
 			worker: selected_workers,
 			due: finish,
 		};
-		console.log(assignment, "assignment");
+		console.log(assignment, "assignments object");
 
 		setAssignTask(assignment);
-		console.log(assignedTasks)
+		console.log(assignedTasks);
 		setAssignedTask([assignment, ...assignedTasks]);
-		console.log(assignTask, "assignTask");
+		console.log(assignTask, "assignTaskakjdfhaskjfhas");
 		console.log(assignedTasks, "assignedTasks");
 	};
 	// const assigningTasks = () => {
 	// 	//console.log(finish, selected_workers, selectTask)
 	// 	if (finish && selected_workers.length && selectTask) {
 
-	const assignment = {
-		task: selectTask,
-		worker: selected_workers,
-		due: finish,
-	};
 	// console.log(assignment, "assignment");
 
 	// setAssignTask(assignment);
@@ -67,22 +61,50 @@ export default function Assign(props) {
 	// 		alert("please select something PLEASE");
 	// 	}
 	// };
-	/*s
-	const displayAssignment = assignedTasks.map((item, ind) => {
-		<>
-			<input
-				type="checkbox"
-				id={`assignment_${ind}`}
-				key={`assignment_${ind}`}
-			/>
-			Task:{item.task}, Worker(s):
-			{item.worker.map((name) => {
-				<span>{name},</span>;
-			})}{" "}
-			Due Date and Time: {item.dues} <hr />
-		</>;
-	});
-	*/
+
+	// const displayAssignment = assignedTasks.map((item, ind) => {
+	// 	return (
+	// 		<>
+	// 			<input
+	// 				type="checkbox"
+	// 				id={`assignment_${ind}`}
+	// 				key={`assignment_${ind}`}
+	// 			/>
+	// 			Task:{item.task}, Worker(s):
+	// 			{item.worker.map((name) => {
+	// 				<span>{name},</span>;
+	// 			})}{" "}
+	// 			Due Date and Time: {item.due} <hr />
+	// 		</>
+	// 	);
+	// });
+
 	//console.log(tasks, "tasks");
-	return <button onClick={() => assigningTasks()}>Save Selected</button>;
+	return (
+		<>
+			<button onClick={() => assigningTasks()}>Save Selected</button>
+			{/* {displayAssignment}; */}
+		</>
+	);
+}
+
+export function DisplayAssignment(props) {
+	const displayAssignment = props.assignedtask.map((item, ind) => {
+		return (
+			<>
+				<input
+					type="checkbox"
+					id={`assignment_${ind}`}
+					key={`assignment_${ind}`}
+				/>
+				Task:{item.task}, Worker(s):
+				{item.worker.map((name) => {
+					<span>{name},</span>;
+				})}{" "}
+				Due Date and Time: {item.due} <hr />
+			</>
+		);
+	});
+
+	return <>{displayAssignment}</>;
 }

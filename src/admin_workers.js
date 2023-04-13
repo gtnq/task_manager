@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
 
-
 export default function Worker(props) {
 	const {
 		userName,
@@ -43,26 +42,27 @@ export default function Worker(props) {
 		});
 		if (adding) {
 			console.log("added?");
-			setWorkers([...workers, worker]);
 			postWorker(worker);
 		}
 	};
 
 	const postWorker = (worker) => {
-		axios
-			.post("http://localhost:8080/workers", worker)
-			.then((res) => console.log(res));
+		axios.post("http://localhost:8080/workers", worker).then((res) => {
+			console.log(res);
+			setWorkers([...workers, worker]);
+		});
 	};
 	const deleteWorker = (worker) => {
-		let current = workers;
-		let before_workers_loc = workers.indexOf(worker);
-		current.splice(before_workers_loc, 1);
-		setWorkers(current);
-
-		if (worker.id == undefined) worker.id = 1;
 		axios
 			.delete(`http://localhost:8080/workers/${worker.id} `)
-			.then((res) => console.log(res));
+			.then((res) => {
+				let current = workers;
+				let before_workers_loc = workers.indexOf(worker);
+				current.splice(before_workers_loc, 1);
+				setWorkers(current);
+
+				if (worker.id == undefined) worker.id = 1;
+			});
 	}; //need to delete the usestate datas
 
 	//console.log(dueDate, "duedate");
@@ -93,7 +93,9 @@ export default function Worker(props) {
 				}
 			/>
 			{items.firstName + " " + items.lastName}
-			<button onClick={() => deleteWorker(items)}>Remove</button>
+			<button onClick={(e) => {
+                e.preventDefault()
+                deleteWorker(items)}}>Remove</button>
 			<br />
 		</div>
 	));
