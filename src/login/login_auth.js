@@ -1,5 +1,3 @@
-
-
 export default function auth(user, pw, setAdmin, setWorker, setLog, adminsql = [], workersql = [],setLoggedAdmin, setLoggedWorker) {
 	let admin = false,
 		worker = false,

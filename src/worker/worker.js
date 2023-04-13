@@ -1,30 +1,19 @@
 import React, { Component, useEffect, useState } from "react";
 import App from "../App";
-
-
-
-function CurrentTasks(props) {
-    
-	return <h2>Your Current Task</h2>;
-}
-
-function CompletedTasks(props) {
-	return <h2>Your Completed Task</h2>;
-}
+import Worker_manage from "./worker_split";
 
 class Workerpage extends Component {
 	constructor(props) {
 		super(props);
-        this.state = {tasks:[]}
+		this.state = { tasks: [] };
 		this.worker = props.worker;
 		this.log = props.log;
-		this.id = props.id
+		this.id = props.id;
 	}
 
 	render() {
 		return (
 			<>
-				<CurrentTasks />
 				<button
 					onClick={() => {
 						this.worker(false);
@@ -32,8 +21,7 @@ class Workerpage extends Component {
 					}}>
 					return
 				</button>
-
-				<CompletedTasks />
+				<Worker_manage />
 			</>
 		);
 	}
@@ -43,16 +31,20 @@ export default function Worker(props) {
 	const [worker, setWorker] = useState(true),
 		[log, setLog] = useState(false);
 	//console.log(props.return)
-	const workerinfo = props.workerInfo
+	const workerinfo = props.workerInfo;
 	return (
 		<>
 			{log && <App return={true} />}
-			{worker && (<h1 id = "current_user">{workerinfo.firstName + ' ' + workerinfo.lastName}</h1>)}
+			{worker && (
+				<h1 id="current_user">
+					{workerinfo.firstName + " " + workerinfo.lastName}
+				</h1>
+			)}
 			{worker && (
 				<Workerpage
 					worker={setWorker}
 					log={setLog}
-					id = {workerinfo.id}
+					id={workerinfo.id}
 				/>
 			)}
 		</>
