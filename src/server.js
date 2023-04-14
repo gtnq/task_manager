@@ -1,8 +1,10 @@
 let mysql = require("mysql2");
+
 let express = require("express");
 let app = express();
 let cors = require("cors");
 let bodyParser = require("body-parser");
+// let connection = require("./server/databse_connectioin")
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -91,6 +93,39 @@ app.post("/tasks", function (req, res) {
    }
 );
 
+app.get("/assign/:assignID?", function (req, res) {
+	console.log("Route /assign GET");
+	//console.log(req.body.assignID)
+	let statement = `call getAssignment(${req.params.assignID}); `
+	connection.query(statement, function (errQuery, rows) {
+		if (errQuery) {
+			console.log("err");
+		} else if (rows) {
+			console.log("successful, assignments");
+			res.json(rows);
+		} else {
+			console.log("id not found");
+		}
+	});
+});	
+
+app.post("/assign", function (req, res) {
+	console.log("Route /assign POST");
+	let sql = `call addAssignments("${req.body.user_id}","${req.body.tasks_id}")`;
+	
+      connection.query(sql, function (errQuery, result) {
+         if (errQuery) {
+            console.log(errQuery);
+            res.json({ status: "Error", err: errQuery });
+         } else {
+            //console.log("Insert ID: ", result.insertId);
+            res.json({ status: sql, err: "" });
+         }
+      });
+   }
+);
+
+
 app.post("/workers", function (req, res) {
 	console.log("Route /workers POST");
 	let sql = `call addWorker("${req.body.firstName}","${req.body.lastName}","${req.body.userName}","${req.body.passCode}")`;
@@ -128,7 +163,7 @@ app.delete("/workers/:workerID?", function (req, res) {
    }
 });
 
-let connection = mysql.createConnection({
+const connection = mysql.createConnection({
 	host: "localhost",
 	port: "3306",
 	user: "root",

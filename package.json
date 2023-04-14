@@ -26,7 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently --kill-others \"node ./src/server.js\" \"npm start run\""
+    "dev": "concurrently --kill-others \"nodemon ./src/server.js\" \"npm start run\""
   },
   "eslintConfig": {
     "extends": [

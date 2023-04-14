@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import App from "../App";
-import Worker_manage from "./worker_split";
+import WorkerManage from "./worker_split";
 
 class Workerpage extends Component {
 	constructor(props) {
@@ -21,7 +21,7 @@ class Workerpage extends Component {
 					}}>
 					return
 				</button>
-				<Worker_manage />
+				<WorkerManage />
 			</>
 		);
 	}
